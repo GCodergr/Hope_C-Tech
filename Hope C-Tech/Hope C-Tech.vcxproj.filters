@@ -277,7 +277,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\shaders\3.3.shader.vert" />
-    <None Include="src\shaders\3.3.shader.frag" />
+    <None Include="shaders\3.3.shader.frag" />
+    <None Include="shaders\3.3.shader.vert" />
   </ItemGroup>
 </Project>

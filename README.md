@@ -18,7 +18,7 @@ Runtime dlls are located inside the runtime_DLL folder.
 ### Distribution
 
 To distribute the application except for the appropriate runtime dlls, also include 
-a folder (/src/shaders) with the shader files.
+a folder (/assets/shaders) with the shader files.
 
 ## Languages and Libraries
 * C++

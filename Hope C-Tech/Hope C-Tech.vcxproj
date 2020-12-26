@@ -253,8 +253,8 @@
     <ClInclude Include="vendor\SDL2-2.0.12\include\SDL_vulkan.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\shaders\3.3.shader.frag" />
-    <None Include="src\shaders\3.3.shader.vert" />
+    <None Include="shaders\3.3.shader.frag" />
+    <None Include="shaders\3.3.shader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

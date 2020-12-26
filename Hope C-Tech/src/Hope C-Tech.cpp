@@ -45,7 +45,7 @@ int main(int argv, char** args) {
 	}
 
 	// Build and compile shader program
-	Shader ourShader(".\\src\\shaders\\3.3.shader.vert", ".\\src\\shaders\\3.3.shader.frag");
+	Shader ourShader(".\\assets\\shaders\\3.3.shader.vert", ".\\assets\\shaders\\3.3.shader.frag");
 	
 	float vertices[] = {
 			 // Positions			// colors			 
