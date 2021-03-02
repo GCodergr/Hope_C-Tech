@@ -164,9 +164,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Hope C-Tech.cpp" />
+    <ClCompile Include="src\utilities\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Shader.h" />
+    <ClInclude Include="src\utilities\stb_image.h" />
     <ClInclude Include="vendor\SDL2-2.0.12\include\begin_code.h" />
     <ClInclude Include="vendor\SDL2-2.0.12\include\close_code.h" />
     <ClInclude Include="vendor\SDL2-2.0.12\include\SDL.h" />
