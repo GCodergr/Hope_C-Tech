@@ -6,6 +6,10 @@
 #include "SDL.h"
 #include "utilities/stb_image.h"
 
+#include "utilities/glm/glm.hpp"
+#include "utilities/glm/gtc/matrix_transform.hpp"
+#include "utilities/glm/gtc/type_ptr.hpp"
+
 typedef uint32_t u32;
 typedef int32_t b32;
 
@@ -148,7 +152,7 @@ int main(int argv, char** args) {
 	
 	b32 Running = 1;
 	b32 FullScreen = 0;
-
+	
 	while (Running)
 	{
 		SDL_Event Event;
