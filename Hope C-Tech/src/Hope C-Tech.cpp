@@ -10,6 +10,9 @@
 #include "utilities/glm/gtc/matrix_transform.hpp"
 #include "utilities/glm/gtc/type_ptr.hpp"
 
+// Uncomment to enable wire-frame rendering
+//#define WIREFRAME_RENDERING 1
+
 typedef uint32_t u32;
 typedef int32_t b32;
 
@@ -152,12 +155,27 @@ int main(int argv, char** args) {
 	
 	b32 Running = 1;
 	b32 FullScreen = 0;
+
+	// Time
+	u32 previousTime = 0;
+	u32 currentTime = 0;
+	float deltaTime = 0;
+	float time = 0; // Time since the beginning of the application loop
+
+	const float boxSpeed = 0.2f;
 	
 	while (Running)
 	{
+		// Time calculations
+		previousTime = currentTime;
+		currentTime = SDL_GetTicks();
+		deltaTime = (currentTime - previousTime) / 1000.0f;
+		time += deltaTime;
+		
+		// Precess input events
 		SDL_Event Event;
 		while (SDL_PollEvent(&Event))
-		{
+		{		
 			if (Event.type == SDL_KEYDOWN)
 			{
 				switch (Event.key.keysym.sym)
@@ -186,21 +204,32 @@ int main(int argv, char** args) {
 			}
 		}
 
+		// Render 
 		glViewport(0, 0, WINDOWS_WIDTH, WINDOWS_HEIGHT);
 		glClearColor(100.f / 255.f, 149.f / 255.f, 237.f / 255.f, 0.f);
 		glClear(GL_COLOR_BUFFER_BIT);
+		
+#if WIREFRAME_RENDERING
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+#endif
 
-		// Note: Uncomment for wire-frame rendering
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-	    // bind textures on corresponding texture units
+	    // Bind textures on corresponding texture units
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture1);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texture2);
 		
+		// Create transformations
+		glm::mat4 transMatrix = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+		transMatrix = glm::scale(transMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+		transMatrix = glm::rotate(transMatrix, boxSpeed * time, glm::vec3(0.0f, 0.0f, 1.0f));
+		
+		// Get matrix's uniform location and set matrix
+		ourShader.use();
+		const unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");
+		glUniformMatrix4fv(transformLoc, 1, GLU_FALSE, glm::value_ptr(transMatrix));
+		
 		// Render container
-		ourShader.use();		
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 				
