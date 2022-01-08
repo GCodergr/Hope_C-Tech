@@ -6,7 +6,7 @@ Note: This is at an early development stage.
 
 ## Getting Started
 
-A Visual Studio 2019 solution is included. 
+A Visual Studio 2022 solution is included. 
 
 Although we use cross-platform libraries, we mostly focus on development for windows platform.
 
