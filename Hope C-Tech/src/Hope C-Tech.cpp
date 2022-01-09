@@ -19,8 +19,8 @@ typedef int32_t b32;
 const int WINDOWS_WIDTH = 800;
 const int WINDOWS_HEIGHT = 600;
 
-int main(int argv, char** args) {
-
+int main(int argv, char** args)
+{
 	u32 WindowFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 	SDL_Window* window = SDL_CreateWindow("OpenGL Test",
 		SDL_WINDOWPOS_CENTERED,
@@ -52,45 +52,73 @@ int main(int argv, char** args) {
 		return -1;
 	}
 
+	// Configure global OpenGL state
+	glEnable(GL_DEPTH_TEST);
+
 	// Build and compile shader program
 	Shader ourShader(".\\assets\\shaders\\3.3.shader.vert", ".\\assets\\shaders\\3.3.shader.frag");
 
 	// Set up vertex data (and buffer(s)) and configure vertex attributes
 	float vertices[] = {
-			 // Positions			// colors			// texture coordinates  
-		     0.5f,   0.5f,  0.0f,   1.0f, 0.0f, 0.0f,	1.0f,  1.0f,      // top right 
-			 0.5f,  -0.5f,  0.0f,	0.0f, 1.0f, 0.0f,	1.0f,  0.0f,      // bottom right 
-			-0.5f,  -0.5f,  0.0f,	0.0f, 0.0f, 1.0f,   0.0f,  0.0f,      // bottom left 
-			-0.5f,   0.5f,  0.0f,	1.0f, 1.0f, 0.0f,	0.0f,  1.0f       // top left
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 	};
-	unsigned int indices[] = {
-		0, 1, 3,	// first triangle
-		1, 2, 3	// second triangle
-	};
-	
-	GLuint VBO, VAO, EBO;
+
+	GLuint VBO, VAO;
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
 	// 1. Bind the Vertex Array Object
 	glBindVertexArray(VAO);
 	// 2. Bind and set vertex buffer(s)
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-	
 	// 3. Configure vertex attributes
 	// position attribute 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
-	// color attribute
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
 	// texture coordinate attribute
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
 
 	// Load and create a textures 
 	//
@@ -146,12 +174,12 @@ int main(int argv, char** args) {
 	}	
 	stbi_image_free(data);
 
+	
 	// Tell OpenGL for each sampler to which texture unit it belongs to (only has to be done once)
-	ourShader.use(); // don't forget to activate/use the shader before setting uniforms!
-	// either set it manually like so...
-	glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0);
-	// ...or set it via the texture class
+	ourShader.use();
+	ourShader.setInt("texture1", 0);
 	ourShader.setInt("texture2", 1);
+
 	
 	b32 Running = 1;
 	b32 FullScreen = 0;
@@ -207,7 +235,8 @@ int main(int argv, char** args) {
 		// Render 
 		glViewport(0, 0, WINDOWS_WIDTH, WINDOWS_HEIGHT);
 		glClearColor(100.f / 255.f, 149.f / 255.f, 237.f / 255.f, 0.f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		// Clear color and depth buffer
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 #if WIREFRAME_RENDERING
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -223,7 +252,7 @@ int main(int argv, char** args) {
 		glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 		glm::mat4 view = glm::mat4(1.0f);
 		glm::mat4 projection = glm::mat4(1.0f);
-		model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, time, glm::vec3(0.5f, 1.0f, 0.0f));
 		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 		projection = glm::perspective(glm::radians(45.0f), static_cast<float>(WINDOWS_WIDTH) / static_cast<float>(WINDOWS_HEIGHT), 0.1f, 100.0f);
 		// Retrieve the matrix uniform locations
@@ -235,9 +264,9 @@ int main(int argv, char** args) {
 		// Note: Currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
 		ourShader.setMat4("projection", projection);
 
-		// Render container
+		// Render cube
 		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
 				
 		SDL_GL_SwapWindow(window);
 	}
@@ -245,7 +274,6 @@ int main(int argv, char** args) {
 	// optional: de-allocate all resources once they've outlived their purpose:
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);
-	
+
 	return 0;
 }
