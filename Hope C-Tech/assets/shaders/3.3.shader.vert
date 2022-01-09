@@ -7,12 +7,15 @@ layout (location = 2) in vec2 aTexCoord;
 out vec3 ourColor; // output a color to the fragment shader
 out vec2 TexCoord;
 
-uniform mat4 transform;
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
 
 void main(){
     ourColor = aColor;             // set ourColor to the input color we got from the vertex data
     
     //gl_Position = vec4(aPos, 1.0); // see how we directly give a vec3 to vec4's constructor
-    gl_Position = transform * vec4(aPos, 1.0f);
+    //gl_Position = transform * vec4(aPos, 1.0f);
+    gl_Position = projection * view * model * vec4(aPos, 1.0);
     TexCoord = vec2(aTexCoord.x, aTexCoord.y);
 }
