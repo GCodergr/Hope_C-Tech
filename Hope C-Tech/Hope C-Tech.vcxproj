@@ -173,6 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Shader.h" />
+    <ClInclude Include="src\utilities\eg_memory_logging.h" />
     <ClInclude Include="src\utilities\glm\common.hpp" />
     <ClInclude Include="src\utilities\glm\detail\compute_common.hpp" />
     <ClInclude Include="src\utilities\glm\detail\compute_vector_relational.hpp" />

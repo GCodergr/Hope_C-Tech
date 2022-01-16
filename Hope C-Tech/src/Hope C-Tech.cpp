@@ -10,6 +10,8 @@
 #include "utilities/glm/gtc/matrix_transform.hpp"
 #include "utilities/glm/gtc/type_ptr.hpp"
 
+#include "utilities/eg_memory_logging.h"
+
 // Uncomment to enable wire-frame rendering
 //#define WIREFRAME_RENDERING 1
 
@@ -174,6 +176,8 @@ int main(int argv, char** args)
 	}	
 	stbi_image_free(data);
 
+
+	
 	
 	// Tell OpenGL for each sampler to which texture unit it belongs to (only has to be done once)
 	ourShader.use();
@@ -191,7 +195,7 @@ int main(int argv, char** args)
 	float time = 0; // Time since the beginning of the application loop
 
 	const float boxSpeed = 0.2f;
-	
+
 	while (Running)
 	{
 		// Time calculations
@@ -255,6 +259,7 @@ int main(int argv, char** args)
 		model = glm::rotate(model, time, glm::vec3(0.5f, 1.0f, 0.0f));
 		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 		projection = glm::perspective(glm::radians(45.0f), static_cast<float>(WINDOWS_WIDTH) / static_cast<float>(WINDOWS_HEIGHT), 0.1f, 100.0f);
+
 		// Retrieve the matrix uniform locations
 		unsigned int modelLoc = glGetUniformLocation(ourShader.ID, "model");
 		unsigned int viewLoc = glGetUniformLocation(ourShader.ID, "view");

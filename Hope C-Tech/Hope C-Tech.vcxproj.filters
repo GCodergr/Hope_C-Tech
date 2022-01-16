@@ -1130,6 +1130,9 @@
     <ClInclude Include="src\utilities\glm\vector_relational.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\utilities\eg_memory_logging.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\3.3.shader.frag" />
